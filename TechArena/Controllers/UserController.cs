@@ -6,11 +6,11 @@ namespace TechArena.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class FridgeItemController : ControllerBase
+public class UserController : ControllerBase
 {
-    private readonly FridgeItemRepository _repository;
+    private readonly UserRepository _repository;
 
-    public FridgeItemController(FridgeItemRepository repository)
+    public UserController(UserRepository repository)
     {
         _repository = repository;
     }
@@ -21,23 +21,23 @@ public class FridgeItemController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(string id)
     {
-        var item = await _repository.GetByIdAsync(id);
-        return item is not null ? Ok(item) : NotFound();
+        var pantry = await _repository.GetByIdAsync(id);
+        return pantry is not null ? Ok(pantry) : NotFound();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] IFridgeItem item)
+    public async Task<IActionResult> Create([FromBody] IUser pantry)
     {
-        await _repository.CreateAsync(item);
-        return CreatedAtAction(nameof(GetById), new { id = item.Id }, item);
+        await _repository.CreateAsync(pantry);
+        return CreatedAtAction(nameof(GetById), new { id = pantry.Id }, pantry);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(string id, [FromBody] IFridgeItem updatedItem)
+    public async Task<IActionResult> Update(string id, [FromBody] IUser updatedPantry)
     {
         var existing = await _repository.GetByIdAsync(id);
         if (existing is null) return NotFound();
-        await _repository.UpdateAsync(id, updatedItem);
+        await _repository.UpdateAsync(id, updatedPantry);
         return NoContent();
     }
 

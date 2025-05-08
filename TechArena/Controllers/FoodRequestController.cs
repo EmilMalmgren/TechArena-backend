@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TechArena.Interfaces;
+using TechArena.MongoDb.Repositories;
 
 namespace TechArena.Controllers;
 
@@ -7,40 +8,45 @@ namespace TechArena.Controllers;
 [Route("api/[controller]")]
 public class FoodRequestController : ControllerBase
 {
-    private static readonly List<IFoodRequest> FoodRequests = new();
+    private readonly FoodRequestRepository _repository;
+
+    public FoodRequestController(FoodRequestRepository repository)
+    {
+        _repository = repository;
+    }
 
     [HttpGet]
-    public IActionResult GetAll() => Ok(FoodRequests);
+    public async Task<IActionResult> GetAll() => Ok(await _repository.GetAllAsync());
 
     [HttpGet("{id}")]
-    public IActionResult GetById(string id)
+    public async Task<IActionResult> GetById(string id)
     {
-        var request = FoodRequests.FirstOrDefault(r => r.Id == id);
+        var request = await _repository.GetByIdAsync(id);
         return request is not null ? Ok(request) : NotFound();
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] IFoodRequest request)
+    public async Task<IActionResult> Create([FromBody] IFoodRequest request)
     {
-        FoodRequests.Add(request);
+        await _repository.CreateAsync(request);
         return CreatedAtAction(nameof(GetById), new { id = request.Id }, request);
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(string id, [FromBody] IFoodRequest updatedRequest)
+    public async Task<IActionResult> Update(string id, [FromBody] IFoodRequest updatedRequest)
     {
-        var index = FoodRequests.FindIndex(r => r.Id == id);
-        if (index == -1) return NotFound();
-        FoodRequests[index] = updatedRequest;
+        var existing = await _repository.GetByIdAsync(id);
+        if (existing is null) return NotFound();
+        await _repository.UpdateAsync(id, updatedRequest);
         return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(string id)
+    public async Task<IActionResult> Delete(string id)
     {
-        var request = FoodRequests.FirstOrDefault(r => r.Id == id);
-        if (request is null) return NotFound();
-        FoodRequests.Remove(request);
+        var existing = await _repository.GetByIdAsync(id);
+        if (existing is null) return NotFound();
+        await _repository.DeleteAsync(id);
         return NoContent();
     }
 }

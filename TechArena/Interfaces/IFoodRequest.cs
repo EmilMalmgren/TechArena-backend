@@ -6,7 +6,7 @@ public interface IFoodRequest
     string UserInitial { get; set; }
     string UserName { get; set; }
     string UserColor { get; set; }
-    IEnumerable<string> Items { get; set; }
+    IEnumerable<IFridgeItem> Items { get; set; }
     string Location { get; set; }
     string TimePosted { get; set; }
     string TimeNeededBy { get; set; }

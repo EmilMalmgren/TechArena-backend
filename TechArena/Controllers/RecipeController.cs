@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TechArena.Interfaces;
+using TechArena.MongoDb.Repositories;
 
 namespace TechArena.Controllers;
 
@@ -7,40 +8,45 @@ namespace TechArena.Controllers;
 [Route("api/[controller]")]
 public class RecipeController : ControllerBase
 {
-    private static readonly List<IRecipe> Recipes = new();
+    private readonly RecipeRepository _repository;
+
+    public RecipeController(RecipeRepository repository)
+    {
+        _repository = repository;
+    }
 
     [HttpGet]
-    public IActionResult GetAll() => Ok(Recipes);
+    public async Task<IActionResult> GetAll() => Ok(await _repository.GetAllAsync());
 
     [HttpGet("{id}")]
-    public IActionResult GetById(string id)
+    public async Task<IActionResult> GetById(string id)
     {
-        var recipe = Recipes.FirstOrDefault(r => r.Id == id);
+        var recipe = await _repository.GetByIdAsync(id);
         return recipe is not null ? Ok(recipe) : NotFound();
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] IRecipe recipe)
+    public async Task<IActionResult> Create([FromBody] IRecipe recipe)
     {
-        Recipes.Add(recipe);
+        await _repository.CreateAsync(recipe);
         return CreatedAtAction(nameof(GetById), new { id = recipe.Id }, recipe);
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(string id, [FromBody] IRecipe updatedRecipe)
+    public async Task<IActionResult> Update(string id, [FromBody] IRecipe updatedRecipe)
     {
-        var index = Recipes.FindIndex(r => r.Id == id);
-        if (index == -1) return NotFound();
-        Recipes[index] = updatedRecipe;
+        var existing = await _repository.GetByIdAsync(id);
+        if (existing is null) return NotFound();
+        await _repository.UpdateAsync(id, updatedRecipe);
         return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(string id)
+    public async Task<IActionResult> Delete(string id)
     {
-        var recipe = Recipes.FirstOrDefault(r => r.Id == id);
-        if (recipe is null) return NotFound();
-        Recipes.Remove(recipe);
+        var existing = await _repository.GetByIdAsync(id);
+        if (existing is null) return NotFound();
+        await _repository.DeleteAsync(id);
         return NoContent();
     }
 }

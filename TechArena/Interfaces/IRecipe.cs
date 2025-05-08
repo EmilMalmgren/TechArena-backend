@@ -6,9 +6,9 @@ public interface IRecipe
     string Name { get; set; }
     string Image { get; set; }
     int PrepTime { get; set; }
-    IEnumerable<string> Ingredients { get; set; }
-    IEnumerable<string> MatchedIngredients { get; set; }
-    IEnumerable<string> MissingIngredients { get; set; }
+    IEnumerable<IFridgeItem> Ingredients { get; set; }
+    IEnumerable<IFridgeItem> MatchedIngredients { get; set; }
+    IEnumerable<IFridgeItem> MissingIngredients { get; set; }
     RecipeDifficulty Difficulty { get; set; }
     double Rating { get; set; }
     IEnumerable<string> Instructions { get; set; }

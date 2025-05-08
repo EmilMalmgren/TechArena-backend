@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TechArena.Interfaces;
+using TechArena.MongoDb.Repositories;
 
 namespace TechArena.Controllers;
 
@@ -7,40 +8,45 @@ namespace TechArena.Controllers;
 [Route("api/[controller]")]
 public class CommunityPantryController : ControllerBase
 {
-    private static readonly List<ICommunityPantry> CommunityPantries = new();
+    private readonly CommunityPantryRepository _repository;
+
+    public CommunityPantryController(CommunityPantryRepository repository)
+    {
+        _repository = repository;
+    }
 
     [HttpGet]
-    public IActionResult GetAll() => Ok(CommunityPantries);
+    public async Task<IActionResult> GetAll() => Ok(await _repository.GetAllAsync());
 
     [HttpGet("{id}")]
-    public IActionResult GetById(string id)
+    public async Task<IActionResult> GetById(string id)
     {
-        var pantry = CommunityPantries.FirstOrDefault(p => p.Id == id);
+        var pantry = await _repository.GetByIdAsync(id);
         return pantry is not null ? Ok(pantry) : NotFound();
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] ICommunityPantry pantry)
+    public async Task<IActionResult> Create([FromBody] ICommunityPantry pantry)
     {
-        CommunityPantries.Add(pantry);
+        await _repository.CreateAsync(pantry);
         return CreatedAtAction(nameof(GetById), new { id = pantry.Id }, pantry);
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(string id, [FromBody] ICommunityPantry updatedPantry)
+    public async Task<IActionResult> Update(string id, [FromBody] ICommunityPantry updatedPantry)
     {
-        var index = CommunityPantries.FindIndex(p => p.Id == id);
-        if (index == -1) return NotFound();
-        CommunityPantries[index] = updatedPantry;
+        var existing = await _repository.GetByIdAsync(id);
+        if (existing is null) return NotFound();
+        await _repository.UpdateAsync(id, updatedPantry);
         return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(string id)
+    public async Task<IActionResult> Delete(string id)
     {
-        var pantry = CommunityPantries.FirstOrDefault(p => p.Id == id);
-        if (pantry is null) return NotFound();
-        CommunityPantries.Remove(pantry);
+        var existing = await _repository.GetByIdAsync(id);
+        if (existing is null) return NotFound();
+        await _repository.DeleteAsync(id);
         return NoContent();
     }
 }
