@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using TechArena.Interfaces;
+using TechArena.Models;
 using TechArena.MongoDb.Repositories;
 
 namespace TechArena.Controllers;

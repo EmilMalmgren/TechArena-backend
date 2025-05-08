@@ -14,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<MongoDbContext>();
 builder.Services.AddScoped<CommunityPantryRepository>();
 builder.Services.AddScoped<FoodRequestRepository>();
+builder.Services.AddScoped<FridgeItemRepository>();
 builder.Services.AddScoped<RecipeRepository>();
 builder.Services.AddScoped<UserRepository>();
 

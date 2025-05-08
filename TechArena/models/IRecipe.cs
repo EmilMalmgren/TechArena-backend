@@ -1,4 +1,4 @@
-﻿namespace TechArena.Interfaces;
+﻿namespace TechArena.Models;
 
 public interface IRecipe
 {
@@ -6,9 +6,9 @@ public interface IRecipe
     string Name { get; set; }
     string Image { get; set; }
     int PrepTime { get; set; }
-    IEnumerable<IFridgeItem> Ingredients { get; set; }
-    IEnumerable<IFridgeItem> MatchedIngredients { get; set; }
-    IEnumerable<IFridgeItem> MissingIngredients { get; set; }
+    IEnumerable<FridgeItem> Ingredients { get; set; }
+    IEnumerable<FridgeItem> MatchedIngredients { get; set; }
+    IEnumerable<FridgeItem> MissingIngredients { get; set; }
     RecipeDifficulty Difficulty { get; set; }
     double Rating { get; set; }
     IEnumerable<string> Instructions { get; set; }

@@ -1,5 +1,5 @@
 ﻿using MongoDB.Driver;
-using TechArena.Interfaces;
+using TechArena.Models;
 
 namespace TechArena.MongoDb.Repositories
 {
