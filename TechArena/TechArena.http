@@ -1,0 +1,6 @@
+@TechArena_HostAddress = http://localhost:5036
+
+GET {{TechArena_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
