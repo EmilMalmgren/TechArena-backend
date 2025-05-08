@@ -1,4 +1,4 @@
-﻿namespace TechArena.Interfaces;
+﻿namespace TechArena.Models;
 
 public interface ICommunityPantry
 {
@@ -7,7 +7,7 @@ public interface ICommunityPantry
     string Type { get; set; }
     string Address { get; set; }
     double Distance { get; set; }
-    IEnumerable<IFridgeItem> Items { get; set; }
+    IEnumerable<FridgeItem> Items { get; set; }
     string Hours { get; set; }
     string DaysOpen { get; set; }
 }

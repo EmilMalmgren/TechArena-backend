@@ -1,4 +1,5 @@
-﻿namespace TechArena.Interfaces;
+﻿namespace TechArena.Models;
+
 
 public interface IFoodRequest
 {
@@ -6,7 +7,7 @@ public interface IFoodRequest
     string UserInitial { get; set; }
     string UserName { get; set; }
     string UserColor { get; set; }
-    IEnumerable<IFridgeItem> Items { get; set; }
+    IEnumerable<FridgeItem> Items { get; set; }
     string Location { get; set; }
     string TimePosted { get; set; }
     string TimeNeededBy { get; set; }

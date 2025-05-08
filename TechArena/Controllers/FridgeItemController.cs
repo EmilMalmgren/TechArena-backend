@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using TechArena.Interfaces;
+using TechArena.Models;
 using TechArena.MongoDb.Repositories;
 
 namespace TechArena.Controllers;
@@ -26,14 +26,14 @@ public class FridgeItemController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] IFridgeItem item)
+    public async Task<IActionResult> Create([FromBody] FridgeItem item)
     {
         await _repository.CreateAsync(item);
         return CreatedAtAction(nameof(GetById), new { id = item.Id }, item);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(string id, [FromBody] IFridgeItem updatedItem)
+    public async Task<IActionResult> Update(string id, [FromBody] FridgeItem updatedItem)
     {
         var existing = await _repository.GetByIdAsync(id);
         if (existing is null) return NotFound();

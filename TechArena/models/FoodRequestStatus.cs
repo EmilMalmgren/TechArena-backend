@@ -1,4 +1,4 @@
-﻿namespace TechArena.Interfaces;
+﻿namespace TechArena.Models;
 
 public enum FoodRequestStatus
 {
