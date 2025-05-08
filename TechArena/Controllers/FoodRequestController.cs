@@ -19,7 +19,7 @@ public class FoodRequestController : ControllerBase
     public async Task<IActionResult> GetAll() => Ok(await _repository.GetAllAsync());
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(string id)
     {
         var request = await _repository.GetByIdAsync(id);
         return request is not null ? Ok(request) : NotFound();
@@ -33,7 +33,7 @@ public class FoodRequestController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] IFoodRequest updatedRequest)
+    public async Task<IActionResult> Update(string id, [FromBody] IFoodRequest updatedRequest)
     {
         var existing = await _repository.GetByIdAsync(id);
         if (existing is null) return NotFound();
@@ -42,7 +42,7 @@ public class FoodRequestController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(string id)
     {
         var existing = await _repository.GetByIdAsync(id);
         if (existing is null) return NotFound();

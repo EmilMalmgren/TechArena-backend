@@ -14,12 +14,12 @@ namespace TechArena.MongoDb.Repositories
 
         public async Task<IEnumerable<ICommunityPantry>> GetAllAsync() => await _collection.Find(_ => true).ToListAsync();
 
-        public async Task<ICommunityPantry?> GetByIdAsync(int id) => await _collection.Find(p => p.Id == id).FirstOrDefaultAsync();
+        public async Task<ICommunityPantry?> GetByIdAsync(string id) => await _collection.Find(p => p.Id == id).FirstOrDefaultAsync();
 
         public async Task CreateAsync(ICommunityPantry pantry) => await _collection.InsertOneAsync(pantry);
 
-        public async Task UpdateAsync(int id, ICommunityPantry pantry) => await _collection.ReplaceOneAsync(p => p.Id == id, pantry);
+        public async Task UpdateAsync(string id, ICommunityPantry pantry) => await _collection.ReplaceOneAsync(p => p.Id == id, pantry);
 
-        public async Task DeleteAsync(int id) => await _collection.DeleteOneAsync(p => p.Id == id);
+        public async Task DeleteAsync(string id) => await _collection.DeleteOneAsync(p => p.Id == id);
     }
 }

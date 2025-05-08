@@ -2,8 +2,7 @@
 
 public interface ICommunityPantry
 {
-    int Id { get; set; }
-    int UserId { get; set; }
+    string Id { get; set; }
     string Name { get; set; }
     string Type { get; set; }
     string Address { get; set; }

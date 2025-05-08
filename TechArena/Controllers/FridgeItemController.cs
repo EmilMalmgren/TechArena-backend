@@ -8,9 +8,9 @@ namespace TechArena.Controllers;
 [Route("api/[controller]")]
 public class FridgeItemController : ControllerBase
 {
-    private readonly UserRepository _repository;
+    private readonly FridgeItemRepository _repository;
 
-    public FridgeItemController(UserRepository repository)
+    public FridgeItemController(FridgeItemRepository repository)
     {
         _repository = repository;
     }
@@ -19,27 +19,34 @@ public class FridgeItemController : ControllerBase
     public async Task<IActionResult> GetAll() => Ok(await _repository.GetAllAsync());
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(string id)
     {
         var item = await _repository.GetByIdAsync(id);
         return item is not null ? Ok(item) : NotFound();
     }
 
-    [HttpPost("{userId}")]
-    public async Task<IActionResult> AddItem(int userId, [FromBody] IFridgeItem item)
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] IFridgeItem item)
     {
-        var user = await _repository.GetByIdAsync(userId);
-        return user is not null ? Ok(user.FridgeItems) : NotFound();
+        await _repository.CreateAsync(item);
+        return CreatedAtAction(nameof(GetById), new { id = item.Id }, item);
     }
 
-    [HttpDelete("{userId}/{id]")]
-    public async Task<IActionResult> DeleteItem(int userId, int id)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(string id, [FromBody] IFridgeItem updatedItem)
     {
-        var user = await _repository.GetByIdAsync(userId);
-        if(user is null) return NotFound();
-        var item = user.FridgeItems.FirstOrDefault(i => i.Id == id);
-        if (item is null) return NotFound();
-        user.FridgeItems.Remove(item);
-        return Ok();
+        var existing = await _repository.GetByIdAsync(id);
+        if (existing is null) return NotFound();
+        await _repository.UpdateAsync(id, updatedItem);
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(string id)
+    {
+        var existing = await _repository.GetByIdAsync(id);
+        if (existing is null) return NotFound();
+        await _repository.DeleteAsync(id);
+        return NoContent();
     }
 }
