@@ -2,7 +2,8 @@
 
 public interface IFoodRequest
 {
-    string Id { get; set; }
+    int Id { get; set; }
+    int UserId { get; set; }
     string UserInitial { get; set; }
     string UserName { get; set; }
     string UserColor { get; set; }

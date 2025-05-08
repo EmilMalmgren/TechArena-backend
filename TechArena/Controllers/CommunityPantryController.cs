@@ -19,7 +19,7 @@ public class CommunityPantryController : ControllerBase
     public async Task<IActionResult> GetAll() => Ok(await _repository.GetAllAsync());
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(string id)
+    public async Task<IActionResult> GetById(int id)
     {
         var pantry = await _repository.GetByIdAsync(id);
         return pantry is not null ? Ok(pantry) : NotFound();
@@ -33,7 +33,7 @@ public class CommunityPantryController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(string id, [FromBody] ICommunityPantry updatedPantry)
+    public async Task<IActionResult> Update(int id, [FromBody] ICommunityPantry updatedPantry)
     {
         var existing = await _repository.GetByIdAsync(id);
         if (existing is null) return NotFound();
@@ -42,7 +42,7 @@ public class CommunityPantryController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(string id)
+    public async Task<IActionResult> Delete(int id)
     {
         var existing = await _repository.GetByIdAsync(id);
         if (existing is null) return NotFound();

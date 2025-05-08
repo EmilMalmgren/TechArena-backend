@@ -2,7 +2,7 @@
 
 public interface IFridgeItem
 {
-    string Id { get; set; }
+    int Id { get; set; }
     string Name { get; set; }
     string Category { get; set; }
     int Quantity { get; set; }

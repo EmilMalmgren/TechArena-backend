@@ -14,11 +14,11 @@ public class FoodRequestRepository
 
     public async Task<IEnumerable<IFoodRequest>> GetAllAsync() => await _collection.Find(_ => true).ToListAsync();
 
-    public async Task<IFoodRequest?> GetByIdAsync(string id) => await _collection.Find(r => r.Id == id).FirstOrDefaultAsync();
+    public async Task<IFoodRequest?> GetByIdAsync(int id) => await _collection.Find(r => r.Id == id).FirstOrDefaultAsync();
 
     public async Task CreateAsync(IFoodRequest request) => await _collection.InsertOneAsync(request);
 
-    public async Task UpdateAsync(string id, IFoodRequest request) => await _collection.ReplaceOneAsync(r => r.Id == id, request);
+    public async Task UpdateAsync(int id, IFoodRequest request) => await _collection.ReplaceOneAsync(r => r.Id == id, request);
 
-    public async Task DeleteAsync(string id) => await _collection.DeleteOneAsync(r => r.Id == id);
+    public async Task DeleteAsync(int id) => await _collection.DeleteOneAsync(r => r.Id == id);
 }
