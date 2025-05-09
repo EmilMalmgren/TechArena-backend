@@ -6,11 +6,11 @@ namespace TechArena.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class FoodRequestController : ControllerBase
+public class LocationController : ControllerBase
 {
-    private readonly FoodRequestRepository _repository;
+    private readonly LocationRepository _repository;
 
-    public FoodRequestController(FoodRequestRepository repository)
+    public LocationController(LocationRepository repository)
     {
         _repository = repository;
     }
@@ -21,23 +21,23 @@ public class FoodRequestController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(string id)
     {
-        var request = await _repository.GetByIdAsync(id);
-        return request is not null ? Ok(request) : NotFound();
+        var item = await _repository.GetByIdAsync(id);
+        return item is not null ? Ok(item) : NotFound();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] IFoodRequest request)
+    public async Task<IActionResult> Create([FromBody] Location location)
     {
-        await _repository.CreateAsync(request);
-        return CreatedAtAction(nameof(GetById), new { id = request.Id }, request);
+        await _repository.CreateAsync(location);
+        return CreatedAtAction(nameof(GetById), new { id = location.Id }, location);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(string id, [FromBody] IFoodRequest updatedRequest)
+    public async Task<IActionResult> Update(string id, [FromBody] Location updatedLocation)
     {
         var existing = await _repository.GetByIdAsync(id);
         if (existing is null) return NotFound();
-        await _repository.UpdateAsync(id, updatedRequest);
+        await _repository.UpdateAsync(id, updatedLocation);
         return NoContent();
     }
 

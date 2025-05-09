@@ -51,7 +51,7 @@ public class RecipeController : ControllerBase
         await _recipeRepository.DeleteAsync(id);
         return NoContent();
     }
-
+/*
     [HttpGet]
     public async Task<IActionResult> SuggestRecipe()
     {
@@ -71,5 +71,5 @@ public class RecipeController : ControllerBase
             }
         }
         return Ok(recipies);
-    }
+    }*/
 }

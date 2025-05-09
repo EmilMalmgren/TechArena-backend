@@ -8,4 +8,5 @@ public class FridgeItem
     public int Quantity { get; set; }
     public string Unit { get; set; }
     public DateOnly ExpiryDate { get; set; }
+    public bool Reserved {get;set;}
 }
