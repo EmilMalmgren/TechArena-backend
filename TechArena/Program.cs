@@ -12,7 +12,6 @@ builder.Services.AddSwaggerGen();
 
 // Register MongoDB context and repositories
 builder.Services.AddSingleton<MongoDbContext>();
-builder.Services.AddScoped<CommunityPantryRepository>();
 builder.Services.AddScoped<LocationRepository>();
 builder.Services.AddScoped<FridgeItemRepository>();
 builder.Services.AddScoped<RecipeRepository>();

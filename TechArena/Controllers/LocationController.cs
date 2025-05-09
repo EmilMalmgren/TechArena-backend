@@ -41,6 +41,16 @@ public class LocationController : ControllerBase
         return NoContent();
     }
 
+    [HttpPost("{id}")]
+    public async Task<IActionResult> AddItem(string id, [FromBody] FridgeItem fridgeItem)
+    {
+        var existing = await _repository.GetByIdAsync(id);
+        if (existing is null) return NotFound();
+        await _repository.AddItemAsync(id, fridgeItem);
+        return NoContent();
+    }
+
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
