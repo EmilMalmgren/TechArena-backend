@@ -7,8 +7,8 @@ public interface IRecipe
     string Image { get; set; }
     int PrepTime { get; set; }
     IEnumerable<FridgeItem> Ingredients { get; set; }
-    IEnumerable<FridgeItem> MatchedIngredients { get; set; }
-    IEnumerable<FridgeItem> MissingIngredients { get; set; }
+    List<FridgeItem> MatchedIngredients { get; set; }
+    List<FridgeItem> MissingIngredients { get; set; }
     RecipeDifficulty Difficulty { get; set; }
     double Rating { get; set; }
     IEnumerable<string> Instructions { get; set; }
